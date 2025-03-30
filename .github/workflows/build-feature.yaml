@@ -1,0 +1,33 @@
+name: Build and Test Feature Branch
+
+on:
+    push:
+        branches:
+            - feature/**
+
+jobs:
+    build-feature:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+            - name: pull and checkout from git repository
+              run: |
+                    echo "pulling and checking out from git repository"
+
+            - name: Set up JDK 21
+              uses: actions/setup-java@v4
+              with:
+                    java-version: '21'
+                    distribution: 'temurin'
+
+            - name: Set Environment Variables
+              run: |
+                echo "DB_URL=${{ secrets.DB_URL_DEVELOP }}" >> $GITHUB_ENV
+                echo "DB_USER=${{ secrets.DB_USER_DEVELOP }}" >> $GITHUB_ENV
+                echo "DB_PASSWORD=${{ secrets.DB_PASSWORD_DEVELOP }}" >> $GITHUB_ENV
+
+            - name: Build with maven
+              run: |
+                    mvn clean install
+                    echo "build with maven"

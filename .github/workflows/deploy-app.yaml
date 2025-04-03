@@ -22,7 +22,8 @@ jobs:
           username: ${{ secrets.EC2_USER_DEV }}
           key: ${{ secrets.EC2_SSH_KEY_DEV }}
           script: |
-            cd /claimhere
+            cd /home/ec2-user/claimhere
             docker pull ghcr.io/jhoel2002/cutomer-back:${{ env.SHA }} # Descarga la última imagen
-            export TAG=${{ env.SHA }} docker-compose up --detach --remove-orphans  # Reinicia sin tiempo de inactividad
+            export TAG=${{ env.SHA }} 
+            docker-compose up --detach --remove-orphans  # Reinicia sin tiempo de inactividad
             docker system prune -f  # Limpia imágenes antiguas

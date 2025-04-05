@@ -91,7 +91,7 @@ jobs:
       ######################################################## 
       - name: trigger deploy artifact
         if: success()
-        uses: peter-evans/repository-dispatch@v2
+        uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}

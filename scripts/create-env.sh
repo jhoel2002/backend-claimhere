@@ -8,15 +8,16 @@ ENV_FILE="../.env/.env"
 
 # Crear el archivo con las claves sin valores
 cat <<EOL > $ENV_FILE
-DB_URL=
-DB_USER=
-DB_PASSWORD=
-PORT=
-
 DB_URL_PROD=
 DB_USER_PROD=
 DB_PASSWORD_PROD=
 PORT_PROD=
+
+
+DB_URL=
+DB_USER=
+DB_PASSWORD=
+PORT=
 EOL
 
 echo "$ENV_FILE creado con variables vacías."

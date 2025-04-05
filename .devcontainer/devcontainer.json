@@ -1,0 +1,17 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-outside-of-docker-compose
+{
+	"name": "claimhereweb-conteiner",
+	"image": "mcr.microsoft.com/devcontainers/java:21",
+	
+	"features": {
+		"ghcr.io/devcontainers-extra/features/maven-sdkman:2": {},
+		"ghcr.io/devcontainers/features/git:1": {}
+	},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [8080],
+
+	"remoteUser": "root",
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "mvn clean package -DskipTests=true"
+}

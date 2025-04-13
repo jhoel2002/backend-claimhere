@@ -9,5 +9,4 @@ public class ClaimherewebApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ClaimherewebApplication.class, args);
 	}
-
 }

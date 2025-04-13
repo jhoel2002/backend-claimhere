@@ -7,6 +7,7 @@ on:
         description: '1 para encender, 0 para apagar'
         required: true
         default: '1'
+##prueba de cambio
 
 jobs:
   controlar-rds:

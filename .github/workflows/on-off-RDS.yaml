@@ -1,0 +1,35 @@
+name: Control de RDS (On/Off)
+
+on:
+  workflow_dispatch:
+    inputs:
+      estado:
+        description: 'Ingresar 1 para encender, 0 para apagar'
+        required: true
+        default: '1'
+
+jobs:
+  control-rds:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configurar credenciales AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_RDS }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_RDS }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Mostrar estado solicitado
+        run: echo "Estado recibido: ${{ github.event.inputs.estado }}"
+
+      - name: Encender RDS si estado = 1
+        if: ${{ github.event.inputs.estado == '1' }}
+        run: |
+          echo "Encendiendo la instancia RDS..."
+          aws rds start-db-instance --db-instance-identifier ${{ secrets.RDS_INSTANCE_ID }}
+
+      - name: Apagar RDS si estado = 0
+        if: ${{ github.event.inputs.estado == '0' }}
+        run: |
+          echo "Apagando la instancia RDS..."
+          aws rds stop-db-instance --db-instance-identifier ${{ secrets.RDS_INSTANCE_ID }}

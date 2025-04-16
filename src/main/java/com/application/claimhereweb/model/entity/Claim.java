@@ -17,7 +17,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "ch_reclamos")
-public class claim {
+public class Claim {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -50,9 +50,9 @@ public class claim {
 
     @JoinColumn(name = "fk_cliente", referencedColumnName = "id_cliente")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private customer customer;
+    private Customer customer;
 
     @JoinColumn(name = "fk_empresa", referencedColumnName = "id_empresa")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private company company;
+    private Company company;
 }

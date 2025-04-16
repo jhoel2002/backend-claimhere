@@ -1,21 +1,26 @@
 package com.application.claimhereweb.model.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.application.claimhereweb.model.entity.user;
+import com.application.claimhereweb.model.entity.User;
 
-public interface userRepository extends JpaRepository<user, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "SELECT " +
             "cu.id_usuario, " +
             "cu.nombres, " +
             "cu.apellidos, " +
             "cu.correo, " +
-            "cu.password, " + // ← ¡coma agregada aquí!
+            "cu.password, " +
             "cu.tipo_usuario " +
             "FROM ch_usuarios cu " +
             "WHERE cu.tipo_usuario IN ('Admin', 'Empleado');", nativeQuery = true)
-    public List<user> findUserByAdminEmpleado();
+    public List<User> findUserByAdminEmpleado();
+
+    boolean existsByEmail(String email);
+
+    Optional<User> findByEmail(String email);
 }

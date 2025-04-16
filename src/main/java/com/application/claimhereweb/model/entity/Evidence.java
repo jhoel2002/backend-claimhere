@@ -16,7 +16,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "ch_evidencias")
-public class evidence {
+public class Evidence {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -38,5 +38,5 @@ public class evidence {
 
     @JoinColumn(name = "fk_reclamo", referencedColumnName = "id_reclamo")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private claim claim;
+    private Claim claim;
 }

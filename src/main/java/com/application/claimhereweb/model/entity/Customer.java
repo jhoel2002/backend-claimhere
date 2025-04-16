@@ -15,7 +15,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "ch_clientes")
-public class customer {
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -32,5 +32,5 @@ public class customer {
 
     @JoinColumn(name = "fk_usuario", referencedColumnName = "id_usuario")
     @OneToOne(optional = false, fetch = FetchType.EAGER)
-    private user user;
+    private User user;
 }

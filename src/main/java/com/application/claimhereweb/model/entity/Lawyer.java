@@ -8,27 +8,26 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "customers")
-public class Customer {
+@Table(name = "lawyers")
+public class Lawyer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Long id;
 
-    @Basic(optional = false)
-    @Column(name = "document_type")
-    private String document_type;
-
-    @Basic(optional = false)
-    @Column(name = "document_number")
-    private String document_number;
+    // Un abogado solo puede pertenecer a una area y dentro de una area puede haber
+    // muchos abogados
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_area", referencedColumnName = "id")
+    private Area area;
 
     @JoinColumn(name = "fk_user", referencedColumnName = "id")
     @OneToOne(optional = false, fetch = FetchType.EAGER)

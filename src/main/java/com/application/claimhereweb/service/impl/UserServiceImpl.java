@@ -42,10 +42,10 @@ public class UserServiceImpl implements IUserService {
 
         Set<Role> roles = new HashSet<>();
 
-        roles.add(Role.USER);
+        roles.add(Role.ROLE_USER);
 
         if (user.isAdmin()) {
-            roles.add(Role.ADMIN);
+            roles.add(Role.ROLE_ADMIN);
         }
         user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));

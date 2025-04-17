@@ -2,7 +2,7 @@ package com.application.claimhereweb.model.entity;
 
 
 public enum Role {
-    ADMIN,
-    USER,
-    CUSTOMER
+    ROLE_ADMIN,
+    ROLE_USER,
+    ROLE_CUSTOMER
 }

@@ -14,7 +14,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.application.claimhereweb.model.entity.User;
-import com.application.claimhereweb.security.TokenJwtConfig;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,9 +25,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import static com.application.claimhereweb.security.TokenJwtConfig.*;
+
+
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-        private AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -71,18 +73,17 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Claims claims = Jwts.claims()
                 .add("authorities", new ObjectMapper().writeValueAsString(roles))
                 .add("username", username)
-        .build();
-
+                .build();
 
         String token = Jwts.builder()
                 .subject(username)
                 .claims(claims)
                 .expiration(new Date(System.currentTimeMillis() + 3600000))
                 .issuedAt(new Date())
-                .signWith(TokenJwtConfig.SECRET_KEY)
+                .signWith(SECRET_KEY)
                 .compact();
 
-        response.addHeader(TokenJwtConfig.HEADER_AUTHORIZATION, TokenJwtConfig.PREFIX_TOKEN + token);
+        response.addHeader(HEADER_AUTHORIZATION, PREFIX_TOKEN + token);
 
         Map<String, String> body = new HashMap<>();
         body.put("token", token);
@@ -90,7 +91,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         body.put("message", String.format("Hola %s has iniciado sesion con exito!", username));
 
         response.getWriter().write(new ObjectMapper().writeValueAsString(body));
-        response.setContentType(TokenJwtConfig.CONTENT_TYPE);
+        response.setContentType(CONTENT_TYPE);
         response.setStatus(200);
     }
 
@@ -103,7 +104,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         response.getWriter().write(new ObjectMapper().writeValueAsString(body));
         response.setStatus(401);
-        response.setContentType(TokenJwtConfig.CONTENT_TYPE);
+        response.setContentType(CONTENT_TYPE);
     }
 
     

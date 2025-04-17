@@ -23,7 +23,7 @@ import com.application.claimhereweb.service.IUserService;
 import jakarta.validation.Valid;
 
 @RestController
-//@CrossOrigin("*")
+@CrossOrigin(origins="http://localhost:4200", originPatterns = "*")
 @RequestMapping("api/users")
 public class userController {
     @Autowired
@@ -50,8 +50,8 @@ public class userController {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody User user, BindingResult result) {
         if (result.hasFieldErrors()) {
             return validation(result);

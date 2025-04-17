@@ -15,7 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import com.application.claimhereweb.security.SimpleGrantedAuthorityJsonCreator;
-import com.application.claimhereweb.security.TokenJwtConfig;
+import static com.application.claimhereweb.security.TokenJwtConfig.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Claims;
@@ -36,16 +36,16 @@ public class JwtValidationFilter extends BasicAuthenticationFilter{
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-        String header = request.getHeader(TokenJwtConfig.HEADER_AUTHORIZATION);
+        String header = request.getHeader(HEADER_AUTHORIZATION);
 
-        if (header == null || !header.startsWith(TokenJwtConfig.PREFIX_TOKEN)) {
+        if (header == null || !header.startsWith(PREFIX_TOKEN)) {
             chain.doFilter(request, response);
             return;
         }
-        String token = header.replace(TokenJwtConfig.PREFIX_TOKEN, "");
+        String token = header.replace(PREFIX_TOKEN, "");
 
         try {
-            Claims claims = Jwts.parser().verifyWith(TokenJwtConfig.SECRET_KEY).build().parseSignedClaims(token).getPayload();
+            Claims claims = Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(token).getPayload();
             String usename = claims.getSubject();
 
             Object authoritiesClaims = claims.get("authorities");
@@ -67,7 +67,7 @@ public class JwtValidationFilter extends BasicAuthenticationFilter{
 
             response.getWriter().write(new ObjectMapper().writeValueAsString(body));
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            response.setContentType(TokenJwtConfig.CONTENT_TYPE);
+            response.setContentType(CONTENT_TYPE);
         }
     }
 }

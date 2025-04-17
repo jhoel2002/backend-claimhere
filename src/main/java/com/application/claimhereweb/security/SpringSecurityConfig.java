@@ -50,6 +50,7 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/users/getAllUserByAdminRol").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/webjars/**", "/swagger-resources/**").permitAll()
                 // TIENE QUE SER POR ORDEN  GET -> POST -> PUT -> DELETE
                 .anyRequest().authenticated())
                 .exceptionHandling(exceptionHandling -> exceptionHandling

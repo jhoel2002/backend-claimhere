@@ -1,5 +1,7 @@
 package com.application.claimhereweb.model.entity;
 
+import java.security.Timestamp;
+
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,27 +11,28 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "lawyers")
-public class Lawyer {
+@Table(name = "evidences")
+public class Evidence {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Long id;
 
-    // Un abogado solo puede pertenecer a una area y dentro de una area puede haber
-    // muchos abogados
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_area", referencedColumnName = "id")
-    private Area area;
+    @Basic(optional = false)
+    @Column(name = "rute_evidence")
+    private String rute_evidence;
 
-    @JoinColumn(name = "id_user", referencedColumnName = "id")
-    @OneToOne(optional = false, fetch = FetchType.EAGER)
-    private User user;
+    @Basic(optional = false)
+    @Column(name = "register_date")
+    private Timestamp register_date;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_case", referencedColumnName = "id")
+    private Case value_case;
 }

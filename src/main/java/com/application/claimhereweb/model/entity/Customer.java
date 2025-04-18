@@ -30,7 +30,7 @@ public class Customer {
     @Column(name = "document_number")
     private String document_number;
 
-    @JoinColumn(name = "fk_user", referencedColumnName = "id")
+    @JoinColumn(name = "id_user", referencedColumnName = "id")
     @OneToOne(optional = false, fetch = FetchType.EAGER)
     private User user;
 }

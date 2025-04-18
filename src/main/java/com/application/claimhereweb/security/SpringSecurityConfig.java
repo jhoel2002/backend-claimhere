@@ -25,7 +25,7 @@ import com.application.claimhereweb.security.filter.JwtAuthenticationFilter;
 import com.application.claimhereweb.security.filter.JwtValidationFilter;
 
 @Configuration
-@EnableMethodSecurity(prePostEnabled=true)
+@EnableMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfig {
 
     @Autowired
@@ -50,11 +50,14 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/users/getAllUserByAdminRol").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/webjars/**", "/swagger-resources/**").permitAll()
-                // TIENE QUE SER POR ORDEN  GET -> POST -> PUT -> DELETE
+                .requestMatchers(HttpMethod.POST, "/api/cases/registerCase").permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/webjars/**",
+                        "/swagger-resources/**")
+                .permitAll()
+                // TIENE QUE SER POR ORDEN GET -> POST -> PUT -> DELETE
                 .anyRequest().authenticated())
                 .exceptionHandling(exceptionHandling -> exceptionHandling
-                .authenticationEntryPoint(customAuthenticationEntryPoint))
+                        .authenticationEntryPoint(customAuthenticationEntryPoint))
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .addFilter(new JwtValidationFilter(authenticationManager()))
                 .csrf(config -> config.disable())
@@ -74,7 +77,7 @@ public class SpringSecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
-    }  
+    }
 
     @Bean
     FilterRegistrationBean<CorsFilter> corsFilter() {

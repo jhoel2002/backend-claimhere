@@ -61,7 +61,7 @@ public class User {
     private boolean enabled;
 
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = Role.class)
-    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "id_user"),inverseJoinColumns = @JoinColumn(name = "id_role"))
+    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_role"))
     @Column(name = "roles")
     private Set<Role> roles = new HashSet<>();
 

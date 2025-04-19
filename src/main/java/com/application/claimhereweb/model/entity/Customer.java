@@ -31,6 +31,6 @@ public class Customer {
     private String document_number;
 
     @JoinColumn(name = "id_user", referencedColumnName = "id")
-    @OneToOne(optional = false, fetch = FetchType.EAGER)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     private User user;
 }

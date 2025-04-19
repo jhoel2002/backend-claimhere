@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.application.claimhereweb.model.entity.User;
-import com.application.claimhereweb.service.IUserService;
+import com.application.claimhereweb.service.impl.UserServiceImpl;
 
 import jakarta.validation.Valid;
 
@@ -27,7 +27,7 @@ import jakarta.validation.Valid;
 @RequestMapping("api/users")
 public class userController {
     @Autowired
-    private IUserService userService;
+    private UserServiceImpl userService;
 
     @GetMapping
     public List<User> listAll() {

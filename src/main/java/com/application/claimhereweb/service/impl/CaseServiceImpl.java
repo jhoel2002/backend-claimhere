@@ -2,19 +2,23 @@ package com.application.claimhereweb.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.application.claimhereweb.model.entity.Area;
 import com.application.claimhereweb.model.entity.Case;
 import com.application.claimhereweb.model.entity.Customer;
-import com.application.claimhereweb.model.entity.Lawyer;
+import com.application.claimhereweb.model.entity.User;
+import com.application.claimhereweb.model.entity.enumEntity.StatusOfCase;
 import com.application.claimhereweb.model.repository.AreaRepository;
 import com.application.claimhereweb.model.repository.CaseRepository;
 import com.application.claimhereweb.model.repository.CustomerRepository;
-import com.application.claimhereweb.model.repository.LawyerRepository;
 import com.application.claimhereweb.service.ICaseService;
+import com.application.claimhereweb.service.dto.ResponseCaseDTO;
 import com.application.claimhereweb.service.dto.SaveCaseDTO;
+
 
 @Service
 public class CaseServiceImpl implements ICaseService {
@@ -31,51 +35,42 @@ public class CaseServiceImpl implements ICaseService {
     private CustomerRepository customerRepository;
 
     @Autowired
-    private LawyerRepository lawyerRepository;
+    private ModelMapper modelMapper;
 
     @Override
-    public Case saveCase(SaveCaseDTO dto) {
-        if (dto == null) {
-            logger.warn("Intento de guardar un caso desde un DTO nulo");
-            return null;
-        }
-
+    @Transactional
+    public ResponseCaseDTO saveCase(SaveCaseDTO dto, Long id_customer, Long id_area) {
         logger.info("Registrando caso con título: {}", dto.getTitle());
 
-        // Buscar entidades relacionadas
-        Area area = areaRepository.findById(dto.getId_area()).orElse(null);
-        Customer customer = customerRepository.findById(dto.getId_customer()).orElse(null);
-        Lawyer lawyer = null;
-
-        if (dto.getId_lawyer() != null) {
-            lawyer = lawyerRepository.findById(dto.getId_lawyer()).orElse(null);
+        String areaName = areaRepository.findNameById(id_area);
+        if (areaName == null) {
+            logger.warn("Área con ID {} no encontrada. Cancelando registro.", id_area);
+            throw new RuntimeException("Área no encontrada");
         }
-
-        if (area == null || customer == null) {
-            logger.warn("Área o Cliente no encontrado. Cancelando registro.");
-            return null;
+    
+        String customerName = customerRepository.findCustomerUserNameById(id_customer);
+        if (customerName == null) {
+            logger.warn("Cliente con ID {} no encontrado. Cancelando registro.", id_customer);
+            throw new RuntimeException("Cliente no encontrado");
         }
-
-        // Crear entidad Case
-        Case legalCase = new Case();
-        legalCase.setTitle(dto.getTitle());
-        legalCase.setDescription(dto.getDescription());
-        legalCase.setEvent_date(dto.getEvent_date());
-        legalCase.setLocation(dto.getLocation());
+    
+        Case legalCase = modelMapper.map(dto, Case.class);
+        legalCase.setArea(new Area() {{ setId(id_area); setName(areaName); }});
+        legalCase.setCustomer(new Customer() {{ setId(id_customer); setUser(new User() {{ setName(customerName); }}); }});
+        legalCase.setStatus(StatusOfCase.EN_PROCESO);
         legalCase.setPriority(dto.getPriority());
-        legalCase.setStatus(dto.getStatus());
-
-        legalCase.setArea(area);
-        legalCase.setCustomer(customer);
-        legalCase.setLawyer(lawyer);
 
         try {
             Case savedCase = caseRepository.save(legalCase);
+            ResponseCaseDTO response = modelMapper.map(savedCase, ResponseCaseDTO.class);
+            response.setArea(savedCase.getArea().getName());
+            response.setCustomer(savedCase.getCustomer().getUser().getName());
             logger.info("Caso guardado con ID: {}", savedCase.getId());
-            return savedCase;
+            return response; 
         } catch (Exception e) {
             logger.error("Error al guardar el caso:", e);
             return null;
         }
     }
+
 }

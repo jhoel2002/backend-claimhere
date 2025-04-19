@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.application.claimhereweb.validation.ExistsByEmail;
+import com.application.claimhereweb.validation.IsRequired;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Basic;
@@ -19,7 +20,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -32,26 +33,30 @@ public class User {
     @Column(name = "id")
     private Long id;
 
+    @IsRequired
     @Basic(optional = false)
     @Column(name = "name")
     private String name;
 
+    @IsRequired
     @Basic(optional = false)
     @Column(name = "last_name")
     private String last_name;
 
     @ExistsByEmail
-    @NotBlank
+    @IsRequired
     @Basic(optional = false)
     @Column(name = "email", unique = true)
     private String email;
 
-    @NotBlank
+    @IsRequired
+    @Size(min=8, max=25)
     @Basic(optional = false)
     @Column(name = "password")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @IsRequired
     @Basic(optional = false)
     @Column(name = "phone")
     private String phone;

@@ -2,20 +2,28 @@ package com.application.claimhereweb.service.dto;
 
 import java.sql.Date;
 
+import com.application.claimhereweb.model.entity.enumEntity.Priority;
+import com.application.claimhereweb.validation.IsRequired;
+
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
 
 @Data
 public class SaveCaseDTO {
+    
+    @IsRequired
     private String title;
+
+    @IsRequired
     private String description;
 
-    private Long id_area;
-    private Long id_customer;
-    private Long id_lawyer;
-
+    @PastOrPresent(message = "debe ser del pasado o el presente")
     private Date event_date;
+    
+    @IsRequired
     private String location;
 
-    private String status;
-    private String priority;
+    @NotNull(message = "no puede ser nulo")
+    private Priority priority;
 }

@@ -25,14 +25,18 @@ public class StatusCase {
     private Long id;
 
     @Basic(optional = false)
-    @Column(name = "name")
-    private String name;
+    @Column(name = "old_status")
+    private String old_status;
 
     @Basic(optional = false)
-    @Column(name = "status_date")
-    private Timestamp status_date;
+    @Column(name = "new_status")
+    private String new_status; 
+
+    @Basic(optional = false)
+    @Column(name = "change_date")
+    private Timestamp change_date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_case", referencedColumnName = "id")
-    private Case value_case;
+    private Case caseEntity;
 }

@@ -3,10 +3,14 @@ package com.application.claimhereweb.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.application.claimhereweb.exceptions.ResourceNotFoundException;
 import com.application.claimhereweb.model.entity.Area;
 import com.application.claimhereweb.model.entity.Case;
 import com.application.claimhereweb.model.entity.Customer;
@@ -42,17 +46,15 @@ public class CaseServiceImpl implements ICaseService {
     public ResponseCaseDTO saveCase(SaveCaseDTO dto, Long id_customer, Long id_area) {
         logger.info("Registrando caso con título: {}", dto.getTitle());
 
-        String areaName = areaRepository.findNameById(id_area);
-        if (areaName == null) {
-            logger.warn("Área con ID {} no encontrada. Cancelando registro.", id_area);
-            throw new RuntimeException("Área no encontrada");
-        }
-    
-        String customerName = customerRepository.findCustomerUserNameById(id_customer);
-        if (customerName == null) {
-            logger.warn("Cliente con ID {} no encontrado. Cancelando registro.", id_customer);
-            throw new RuntimeException("Cliente no encontrado");
-        }
+        String areaName = Optional.ofNullable(areaRepository.findNameById(id_area))
+        .orElseThrow(() -> {
+            return new ResourceNotFoundException("Área no encontrada");
+        });
+
+        String customerName = Optional.ofNullable(customerRepository.findCustomerUserNameById(id_customer))
+        .orElseThrow(() -> {
+            return new ResourceNotFoundException("Cliente no encontrado");
+        });
     
         Case legalCase = modelMapper.map(dto, Case.class);
         legalCase.setArea(new Area() {{ setId(id_area); setName(areaName); }});
@@ -60,17 +62,16 @@ public class CaseServiceImpl implements ICaseService {
         legalCase.setStatus(StatusOfCase.EN_PROCESO);
         legalCase.setPriority(dto.getPriority());
 
-        try {
-            Case savedCase = caseRepository.save(legalCase);
-            ResponseCaseDTO response = modelMapper.map(savedCase, ResponseCaseDTO.class);
-            response.setArea(savedCase.getArea().getName());
-            response.setCustomer(savedCase.getCustomer().getUser().getName());
-            logger.info("Caso guardado con ID: {}", savedCase.getId());
-            return response; 
-        } catch (Exception e) {
-            logger.error("Error al guardar el caso:", e);
-            return null;
-        }
+        Case savedCase = caseRepository.save(legalCase);
+        return responseCase(savedCase);
+    }
+
+    public ResponseCaseDTO responseCase(Case caseModel) {
+        ResponseCaseDTO response = modelMapper.map(caseModel, ResponseCaseDTO.class);
+        response.setArea(caseModel.getArea().getName());
+        response.setCustomer(caseModel.getCustomer().getUser().getName());
+        logger.info("Caso guardado con ID: {}", caseModel.getId());
+        return response;
     }
 
 }

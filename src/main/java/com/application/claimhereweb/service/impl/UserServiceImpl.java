@@ -1,11 +1,12 @@
 package com.application.claimhereweb.service.impl;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,11 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.application.claimhereweb.model.entity.Role;
 import com.application.claimhereweb.model.entity.User;
+import com.application.claimhereweb.model.entity.enumEntity.RoleName;
 import com.application.claimhereweb.model.repository.RoleRepository;
 import com.application.claimhereweb.model.repository.UserRepository;
 import com.application.claimhereweb.service.IUserService;
-
-import static com.application.claimhereweb.utils.constants.*;
+import com.application.claimhereweb.service.dto.ResponseUserDTO;
+import com.application.claimhereweb.service.dto.SaveUserDTO;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -31,10 +33,15 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Override
     @Transactional(readOnly = true)
-    public List<User> findAll() {
-        return (List<User>) userRepository.findAll();
+    public List<ResponseUserDTO> findAll() {
+        return userRepository.findAll().stream()
+            .map(this::responseUser)
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -43,23 +50,35 @@ public class UserServiceImpl implements IUserService {
         return resultados;
     }
 
-    @Override
     @Transactional
-    public User save(User user) {
+    @Override
+    public ResponseUserDTO saveCustomer(SaveUserDTO user) {
+        User saved = prepareUser(user, RoleName.ROLE_CUSTOMER);
+        return responseUser(saved);
+    }
 
-        Optional<Role> optionalRoleUser = roleRepository.findByName(CUSTOMER);
+    @Transactional
+    @Override
+    public ResponseUserDTO saveByAdmin(SaveUserDTO user, RoleName role) {
+        User saved = prepareUser(user, role);
+        return responseUser(saved);
+    }
+
+    private User prepareUser(SaveUserDTO user, RoleName roleName) {
+        User userModel = modelMapper.map(user, User.class);
         Set<Role> roles = new HashSet<>();
+        Optional<Role> optionalRoleMod = roleRepository.findByName(roleName.name());
+                optionalRoleMod.ifPresent(roles::add);
+        userModel.setRoles(roles);
+        userModel.setPassword(passwordEncoder.encode(user.getPassword()));
+        User savedUser = userRepository.save(userModel);
+        return savedUser;
+    }
 
-        optionalRoleUser.ifPresent(roles::add);
-
-        if (user.isAdmin()) {
-            Optional<Role> optionalRoleAdmin = roleRepository.findByName(ADMIN);
-            optionalRoleAdmin.ifPresent(roles::add);
-        }
-
-        user.setRoles(roles);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+    private ResponseUserDTO responseUser(User user) {
+        ResponseUserDTO responseUserDTO = modelMapper.map(user, ResponseUserDTO.class);
+        responseUserDTO.setRole(user.getFirstRoleName());
+        return responseUserDTO;
     }
 
     @Override

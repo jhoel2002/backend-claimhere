@@ -3,10 +3,6 @@ package com.application.claimhereweb.model.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.application.claimhereweb.validation.ExistsByEmail;
-import com.application.claimhereweb.validation.IsRequired;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,8 +15,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -33,30 +27,22 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    @IsRequired
     @Basic(optional = false)
     @Column(name = "name")
     private String name;
 
-    @IsRequired
     @Basic(optional = false)
     @Column(name = "last_name")
     private String last_name;
 
-    @ExistsByEmail
-    @IsRequired
     @Basic(optional = false)
     @Column(name = "email", unique = true)
     private String email;
 
-    @IsRequired
-    @Size(min=8, max=25)
     @Basic(optional = false)
     @Column(name = "password")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @IsRequired
     @Basic(optional = false)
     @Column(name = "phone")
     private String phone;
@@ -70,12 +56,13 @@ public class User {
     @Column(name = "roles")
     private Set<Role> roles = new HashSet<>();
 
-    @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private boolean admin;
-
     @PrePersist
     public void prePersist() {
         enabled = true;
+    }
+
+    public String getFirstRoleName() {
+        return roles.stream().findFirst().map(Role::getName).orElse("");
+        //return roles.stream().findFirst().map(Role::getName);
     }
 }

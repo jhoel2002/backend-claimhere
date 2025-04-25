@@ -10,9 +10,9 @@ public interface IUserService {
 
     List<ResponseUserDTO> findAll();
 
-    ResponseUserDTO saveCustomer(SaveUserDTO user);
+    ResponseUserDTO saveByAdmin(SaveUserDTO user);
 
-    ResponseUserDTO saveByAdmin(SaveUserDTO user, RoleName role);
+    ResponseUserDTO save(SaveUserDTO user, RoleName role);
 
     boolean existsByUsername(String email);
 }

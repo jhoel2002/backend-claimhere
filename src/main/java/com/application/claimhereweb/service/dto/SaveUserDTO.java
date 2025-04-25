@@ -31,4 +31,7 @@ public class SaveUserDTO {
     @Pattern(regexp = "^\\+?[0-9]{7,15}$", message = "debe ser un número telefónico válido")
     @IsRequired
     private String phone;
+    
+    @IsRequired
+    private String address;
 }

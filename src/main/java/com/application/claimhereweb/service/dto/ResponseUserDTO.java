@@ -10,4 +10,6 @@ public class ResponseUserDTO {
     private String email;
     private String phone;
     private String role;
+    private String address;
+    private String creation;
 }

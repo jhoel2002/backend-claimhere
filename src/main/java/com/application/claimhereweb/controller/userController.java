@@ -34,16 +34,16 @@ public class userController {
 
     @PostMapping("/register/{role}")
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> createByAdmin(@Valid @RequestBody SaveUserDTO user, @PathVariable RoleName role) {
+    public ResponseEntity<?> create(@Valid @RequestBody SaveUserDTO user, @PathVariable RoleName role) {
         // if (result.hasFieldErrors()) {
         //     return validation(result);
         // }
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveByAdmin(user,role));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(user,role));
     }
-
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/register")
-    public ResponseEntity<?> create(@Valid @RequestBody SaveUserDTO user) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveCustomer(user));
+    public ResponseEntity<?> createByAdmin(@Valid @RequestBody SaveUserDTO user) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveByAdmin(user));
     }
 
     // private ResponseEntity<?> validation(BindingResult result) {

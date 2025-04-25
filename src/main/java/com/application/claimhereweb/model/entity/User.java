@@ -1,8 +1,10 @@
 package com.application.claimhereweb.model.entity;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,7 +47,8 @@ public class User {
     private String address;
 
     @Column(name = "creation")
-    private Date creation;
+    @CreationTimestamp
+    private Timestamp creation;
 
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = Role.class)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "id_users"), inverseJoinColumns = @JoinColumn(name = "id_role"))

@@ -46,14 +46,14 @@ public class UserServiceImpl implements IUserService {
 
     @Transactional
     @Override
-    public ResponseUserDTO saveCustomer(SaveUserDTO user) {
-        User saved = prepareUser(user, RoleName.ROLE_CUSTOMER);
+    public ResponseUserDTO saveByAdmin(SaveUserDTO user) {
+        User saved = prepareUser(user, RoleName.ROLE_ADMIN);
         return responseUser(saved);
     }
 
     @Transactional
     @Override
-    public ResponseUserDTO saveByAdmin(SaveUserDTO user, RoleName role) {
+    public ResponseUserDTO save(SaveUserDTO user, RoleName role) {
         User saved = prepareUser(user, role);
         return responseUser(saved);
     }

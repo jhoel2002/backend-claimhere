@@ -1,6 +1,5 @@
 package com.application.claimhereweb.model.entity;
 
-import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,14 +13,11 @@ import lombok.Data;
 @Table(name = "roles")
 public class Role {
 
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Basic(optional = false)
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 }

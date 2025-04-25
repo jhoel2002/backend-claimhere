@@ -44,12 +44,6 @@ public class UserServiceImpl implements IUserService {
             .collect(Collectors.toList());
     }
 
-    @Override
-    public List<User> getAllUserByRol() {
-        List<User> resultados = userRepository.findUserByAdminEmpleado();
-        return resultados;
-    }
-
     @Transactional
     @Override
     public ResponseUserDTO saveCustomer(SaveUserDTO user) {

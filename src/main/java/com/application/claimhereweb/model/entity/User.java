@@ -1,9 +1,9 @@
 package com.application.claimhereweb.model.entity;
 
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,38 +23,37 @@ import lombok.Data;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Basic(optional = false)
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Basic(optional = false)
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String last_name;
 
-    @Basic(optional = false)
-    @Column(name = "email", unique = true)
-    private String email;
-
-    @Basic(optional = false)
-    @Column(name = "password")
-    private String password;
-
-    @Basic(optional = false)
-    @Column(name = "phone")
+    @Column(name = "phone", nullable = false)
     private String phone;
 
-    @Basic(optional = false)
-    @Column(name = "enabled")
-    private boolean enabled;
+    @Column(name = "email", unique = true, nullable = false)
+    private String email;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @Column(name = "address", nullable = false)
+    private String address;
+
+    @Column(name = "creation")
+    private Date creation;
 
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = Role.class)
-    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_role"))
+    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "id_users"), inverseJoinColumns = @JoinColumn(name = "id_role"))
     @Column(name = "roles")
     private Set<Role> roles = new HashSet<>();
+
+    @Column(name = "enabled")
+    private boolean enabled;
 
     @PrePersist
     public void prePersist() {

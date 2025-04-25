@@ -1,6 +1,7 @@
 package com.application.claimhereweb.model.entity;
 
-import jakarta.persistence.Basic;
+import com.application.claimhereweb.model.entity.enumEntity.DocumentCustomertype;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,19 +19,16 @@ import lombok.Data;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Basic(optional = false)
-    @Column(name = "document_type")
-    private String document_type;
+    @Column(name = "document_customer_type", nullable = false)
+    private DocumentCustomertype document_customer_type;
 
-    @Basic(optional = false)
-    @Column(name = "document_number")
+    @Column(name = "document_number", nullable = false)
     private String document_number;
 
-    @JoinColumn(name = "id_user", referencedColumnName = "id")
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_user", referencedColumnName = "id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
     private User user;
 }

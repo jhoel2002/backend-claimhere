@@ -2,7 +2,6 @@ package com.application.claimhereweb.model.entity;
 
 import java.security.Timestamp;
 
-import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,27 +15,24 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "reports")
-public class Report {
+@Table(name = "case_change_status")
+public class CaseChangeStatus {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Basic(optional = false)
-    @Column(name = "rute_report")
-    private String rute_report;
+    @Column(name = "old_status", nullable = false)
+    private String old_status;
 
-    @Basic(optional = false)
-    @Column(name = "register_date")
-    private Timestamp register_date;
+    @Column(name = "new_status", nullable = false)
+    private String new_status; 
 
-    @Basic(optional = false)
-    @Column(name = "status")
-    private String status;
+    @Column(name = "change_date")
+    private Timestamp change_date;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_case", referencedColumnName = "id")
-    private Case value_case;
+    @JoinColumn(name = "id_legal_Case", referencedColumnName = "id", nullable = false)
+    private LegalCase legal_case;
 }

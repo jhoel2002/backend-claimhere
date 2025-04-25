@@ -4,8 +4,6 @@ import java.sql.Timestamp;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.application.claimhereweb.model.entity.enumEntity.ActivityType;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -19,29 +17,35 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "case_activity")
-public class CaseActivity {
+@Table(name = "facture")
+public class Facture {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
+
+    @Column(name = "amount", nullable = false)
+    private Double amount;
 
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "registration_date", nullable = false)
+    @Column(name = "issue_date", nullable = false)
     @CreationTimestamp
-    private Timestamp registration_date;
+    private Timestamp issue_date;
 
-    @Column(name = "type_activity", nullable = false)
-    private ActivityType type_activity;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_users", referencedColumnName = "id", nullable = false)
-    private User user;
+    @Column(name = "status_payment", nullable = false)
+    private String status_payment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_legal_case", referencedColumnName = "id", nullable = false)
     private LegalCase legal_case;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_users", referencedColumnName = "id", nullable = true)
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_customer", referencedColumnName = "id", nullable = true)
+    private Customer customer;
 }

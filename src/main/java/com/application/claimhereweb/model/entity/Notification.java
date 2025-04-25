@@ -18,10 +18,10 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "notifications")
+@Table(name = "notification")
 public class Notification {
-    
-    @Id 
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
@@ -29,16 +29,16 @@ public class Notification {
     @Column(name = "message", nullable = false)
     private String message;
 
-    @Column(name = "is_read", nullable = false)
-    private boolean isRead = false;
+    @Column(name = "read_message", nullable = false)
+    private boolean read_message = false;
 
     @Enumerated(EnumType.STRING)
-    private MessageType messageType;
+    private MessageType type_message;
 
     @Column(name = "shipping_date", nullable = false)
     private Date shipping_date;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "id_users", referencedColumnName = "id", nullable = false)
     private User user;
 }

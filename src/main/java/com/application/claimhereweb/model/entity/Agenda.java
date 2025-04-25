@@ -1,11 +1,9 @@
 package com.application.claimhereweb.model.entity;
 
 import java.sql.Timestamp;
+import javax.swing.event.DocumentEvent.EventType;
 
 import org.hibernate.annotations.CreationTimestamp;
-
-import com.application.claimhereweb.model.entity.enumEntity.CaseStatusRequest;
-import com.application.claimhereweb.model.entity.enumEntity.CaseType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,11 +20,11 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "case_request")
-public class CaseRequest {
+@Table(name = "agenda")
+public class Agenda {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
 
     @Column(name = "title", nullable = false)
@@ -35,17 +33,22 @@ public class CaseRequest {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Enumerated(EnumType.STRING)
-    private CaseType type_case;
-
-    @Enumerated(EnumType.STRING)
-    private CaseStatusRequest status_request = CaseStatusRequest.PENDIENTE;
-
-    @Column(name = "application_date", nullable = false)
+    @Column(name = "start_date", nullable = false)
     @CreationTimestamp
-    private Timestamp application_date;
+    private Timestamp start_date;
+
+    @Column(name = "end_date", nullable = false)
+    @CreationTimestamp
+    private Timestamp end_date;
+
+    @Enumerated(EnumType.STRING)
+    private EventType type_event;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_customer", referencedColumnName = "id", nullable = false)
-    private Customer customer;
+    @JoinColumn(name = "id_legal_case", referencedColumnName = "id", nullable = false)
+    private LegalCase legal_case;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_users", referencedColumnName = "id", nullable = true)
+    private User user;
 }

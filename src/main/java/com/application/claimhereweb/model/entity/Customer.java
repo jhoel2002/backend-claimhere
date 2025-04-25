@@ -15,20 +15,20 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "customers")
+@Table(name = "customer")
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "document_customer_type", nullable = false)
-    private DocumentCustomertype document_customer_type;
+    @Column(name = "type_document_customer", nullable = false)
+    private DocumentCustomertype type_document_customer;
 
-    @Column(name = "document_number", nullable = false)
-    private String document_number;
+    @Column(name = "document", nullable = false)
+    private String document;
 
-    @JoinColumn(name = "id_user", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "id_users", referencedColumnName = "id", nullable = false)
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
 }

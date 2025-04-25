@@ -26,15 +26,15 @@ public class CaseTeamUser {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "case_id", referencedColumnName = "id", nullable = false)
-    private LegalCase legalCase;
+    @JoinColumn(name = "id_legal_case", referencedColumnName = "id", nullable = false)
+    private LegalCase legal_case;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "id_users", referencedColumnName = "id", nullable = false)
     private User user;
 
     @Enumerated(EnumType.STRING)
-    private CaseRole caseRole;
+    private CaseRole role_case;
 
     @JoinColumn(name = "asignation_date", nullable = false)
     private Date asignation_date;

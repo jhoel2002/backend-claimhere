@@ -65,6 +65,6 @@ public class User {
 
     public String getFirstRoleName() {
         return roles.stream().findFirst().map(Role::getName).orElse("");
-        //return roles.stream().findFirst().map(Role::getName);
+        // return roles.stream().findFirst().map(Role::getName);
     }
 }

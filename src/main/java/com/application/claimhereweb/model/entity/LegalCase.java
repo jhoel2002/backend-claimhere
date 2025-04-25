@@ -2,6 +2,7 @@ package com.application.claimhereweb.model.entity;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.application.claimhereweb.model.entity.enumEntity.CaseStatus;
 import com.application.claimhereweb.model.entity.enumEntity.CaseType;
 
 import java.sql.Timestamp;
@@ -34,6 +35,9 @@ public class LegalCase {
     private String description;
 
     @Enumerated(EnumType.STRING)
+    private CaseStatus status_case;
+
+    @Enumerated(EnumType.STRING)
     private CaseType type_case;
 
     @Column(name = "start_date", nullable = false)
@@ -45,14 +49,14 @@ public class LegalCase {
     private Timestamp end_date;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_document", referencedColumnName = "id", nullable = false)
-    private Document document;
+    @JoinColumn(name = "id_customer", referencedColumnName = "id", nullable = false)
+    private Customer customer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_users", referencedColumnName = "id", nullable = true)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_case_activity", referencedColumnName = "id", nullable = true)
-    private CaseActivity case_activity;
+    @JoinColumn(name = "id_case_request", referencedColumnName = "id", nullable = true)
+    private CaseRequest case_request;
 }

@@ -26,14 +26,12 @@ public class CaseController {
     @Autowired
     private CaseServiceImpl caseService;
 
-    /*
-     * @PostMapping("/registerCase/cust/{id_customer}/area/{id_area}")
-     * // @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-     * public ResponseEntity<?> createCase(@Valid @RequestBody SaveCaseDTO
-     * value_case, @PathVariable Long id_customer, @PathVariable Long id_area) {
-     * ResponseCaseDTO response = caseService.saveCase(value_case, id_customer,
-     * id_area);
-     * return ResponseEntity.status(HttpStatus.CREATED).body(response);
-     * }
-     */
+    @PostMapping("/registerCase/cust/{id_customer}/area/{id_area}")
+    // @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    public ResponseEntity<?> createCase(@Valid @RequestBody SaveCaseDTO value_case, @PathVariable Long id_customer,
+            @PathVariable Long id_area) {
+        ResponseCaseDTO response = caseService.saveCase(value_case, id_customer,
+                id_area);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
 }

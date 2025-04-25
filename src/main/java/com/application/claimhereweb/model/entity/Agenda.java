@@ -1,9 +1,10 @@
 package com.application.claimhereweb.model.entity;
 
 import java.sql.Timestamp;
-import javax.swing.event.DocumentEvent.EventType;
 
 import org.hibernate.annotations.CreationTimestamp;
+
+import com.application.claimhereweb.model.entity.enumEntity.EventType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

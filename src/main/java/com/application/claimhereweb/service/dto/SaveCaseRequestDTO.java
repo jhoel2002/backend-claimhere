@@ -1,18 +1,13 @@
 package com.application.claimhereweb.service.dto;
 
 import com.application.claimhereweb.model.entity.enumEntity.CaseType;
-import com.application.claimhereweb.validation.IsRequired;
 
 import lombok.Data;
 
 @Data
-public class SaveCaseDTO {
+public class SaveCaseRequestDTO {
 
-    @IsRequired
     private String title;
-
-    @IsRequired
     private String description;
-
     private CaseType type_case;
 }

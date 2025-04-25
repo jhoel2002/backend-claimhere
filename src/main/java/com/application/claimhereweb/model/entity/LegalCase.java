@@ -45,7 +45,6 @@ public class LegalCase {
     private Timestamp start_date;
 
     @Column(name = "end_date", nullable = true)
-    @CreationTimestamp
     private Timestamp end_date;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -3,14 +3,12 @@ package com.application.claimhereweb.service.dto;
 import lombok.Data;
 
 @Data
-public class ResponseCaseDTO {
+public class ResponseCaseRequestDTO {
 
     private Long id;
-    private String title;
     private String description;
-
     private String type_case;
-    private String status_case;
+    private String status_request;
     private String customer;
-    private String start_date;
+    private String application_date;
 }

@@ -38,7 +38,7 @@ public class CaseServiceImpl implements ICaseService {
     @Override
 
     @Transactional
-    public ResponseCaseDTO saveCase(SaveCaseDTO dto, Long id_customer, Long id_area) {
+    public ResponseCaseDTO saveCase(SaveCaseDTO dto, Long id_customer) {
         logger.info("Registrando caso con título: {}", dto.getTitle());
 
         /*
